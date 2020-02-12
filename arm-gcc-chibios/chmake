@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker run --rm -v $(pwd):/home/dev/ChibiOS/src arm-gcc-chibios make $1

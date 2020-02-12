@@ -1,0 +1,42 @@
+FROM debian:stable
+MAINTAINER fiki
+
+ARG u_id
+ARG g_id
+
+RUN set -eux && \
+	apt-get -y update && \
+	apt-get -y install cmake git ffmpeg libavcodec-dev libevdev-dev libusb-1.0-0-dev libavformat-dev \
+						libswscale-dev libsfml-dev libminiupnpc-dev libmbedtls-dev curl libhidapi-dev \
+						libwxbase3.0-dev libwxgtk3.0-dev libpangocairo-1.0-0 libgtk2.0-dev libbluetooth-dev \
+						qt5-default qtbase5-private-dev libudev-dev \
+						libgl1-mesa-dri libgl1-mesa-glx libpulse0 && \
+						groupadd -g ${g_id} emu && useradd -m -u ${u_id} -g ${g_id} emu
+
+WORKDIR /home/emu/src
+
+RUN git clone https://github.com/dolphin-emu/dolphin . && \
+	mkdir build && cd build && \
+	cmake .. && \
+	make -j $(nproc) && \
+	make install
+
+USER emu
+WORKDIR /home/emu
+
+RUN for dir in /gc /wii /config /data; do \
+      mkdir "$d"; \
+      chgrp adm "$d"; \
+      chmod 2775 "$d"; \
+    done
+
+# link /config
+#RUN mkdir -p /home/emu/.config \
+# && ln -s /config /home/ubuntu/.config/dolphin-emu
+
+# link /data
+#RUN mkdir -p /home/ubuntu/.local/share \
+# && ln -s /data /home/ubuntu/.local/share/dolphin-emu
+
+VOLUME /config
+VOLUME /data
