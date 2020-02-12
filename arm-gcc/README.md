@@ -1,3 +1,20 @@
-# RIOT-OS docker
+# GNU Embedded Toolchain for ARM
 
-Docker image meant to be used for compiling RIOT-OS based projects.
+Docker image containing GNU Embedded Toolchain targetting ARM Cortex-M and Cortex-R family of processors.
+
+## Build
+
+Use make to build the image
+
+```
+make
+```
+
+To copy executable script to $HOME/bin
+
+```
+make install
+```
+
+
+
