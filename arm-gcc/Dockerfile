@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:stretch-slim
 
 WORKDIR /home/dev
 
@@ -6,9 +6,10 @@ RUN set -eux && \
 	apt-get update && \
 	apt-get install -y \
 	stow \
-	&& ln -s /lib/x86_64-linux-gnu/libncursesw.so.6 /lib/x86_64-linux-gnu/libncurses.so.5 \
-    && ln -s /lib/x86_64-linux-gnu/libtinfo.so.6 /lib/x86_64-linux-gnu/libtinfo.so.5 \
-	&& mkdir armgcc
+	libncurses5 \
+	libtinfo5 \
+	&& mkdir armgcc \
+	&& rm -rf /var/lib/apt/lists/*
 
 COPY gcc-arm-none-eabi-9-2019-q4-major ./armgcc
 

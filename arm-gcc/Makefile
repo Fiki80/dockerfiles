@@ -8,10 +8,10 @@ LOCAL_BIN=${HOME}/.local/bin
 
 all: build
 
-build: $(DIR)
+build: | $(DIR)
 	docker build -t arm-gcc .
 
-$(DIR): $(FILE)
+$(DIR): | $(FILE)
 	@echo "Extracting $(FILE)"
 	@tar -xf $(FILE) > /dev/null
 	@rm -rf $(DIR)/share/doc
